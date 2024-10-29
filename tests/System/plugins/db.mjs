@@ -94,10 +94,10 @@ function queryTestDB(joomlaQuery, config) {
   return new Promise((resolve, reject) => {
     // Create the connection and connect
     let connectionConfig;
-      /* Verify if the connection is a Unix socket by checking for the "unix:/" prefix.
-       * MariaDB and MySQL JS drivers do not support this prefix, so it must be removed.
-       * We standardise the use of this prefix with the PHP driver by handling it here.
-       */
+    /* Verify if the connection is a Unix socket by checking for the "unix:/" prefix.
+     * MariaDB and MySQL JS drivers do not support this prefix, so it must be removed.
+     * We standardise the use of this prefix with the PHP driver by handling it here.
+     */
     if (config.env.db_host.startsWith('unix:/')) {
       // If the host is a Unix socket, extract the socket path
       connectionConfig = {
