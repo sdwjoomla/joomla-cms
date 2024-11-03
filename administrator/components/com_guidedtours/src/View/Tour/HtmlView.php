@@ -72,7 +72,7 @@ class HtmlView extends BaseHtmlView
         /** @var TourModel $model */
         $model = $this->getModel();
 
-        $this->form  = $model->getItem();
+        $this->form  = $model->getForm();
         $this->item  = $model->getItem();
         $this->state = $model->getState();
 
