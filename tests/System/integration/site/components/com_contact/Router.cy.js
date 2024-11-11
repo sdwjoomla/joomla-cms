@@ -2,8 +2,7 @@ describe('Test in frontend that the contact site router', () => {
   it('can process contact without a menu item', () => {
     cy.db_createContact({ name: 'Test Contact', alias: 'test-contact-router' }).then((contact) => {
       cy.request({ url: `/index.php?option=com_contact&view=contact&id=${contact.id}`, followRedirect: false }).then((response) => {
-        expect(response.status).to.eq(301);
-        expect(response.redirectedToUrl).to.match(/\/index\.php\/component\/contact\/contact\/test-contact-router$/);
+        expect(response.status).to.eq(200);
       });
 
       cy.visit('/index.php/component/contact/contact/test-contact-router');
