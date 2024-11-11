@@ -1,5 +1,5 @@
 import {
-  chmodSync, existsSync, writeFileSync, mkdirSync, rmSync, copyFileSync
+  chmodSync, existsSync, writeFileSync, mkdirSync, rmSync, copyFileSync,
 } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { umask } from 'node:process';
