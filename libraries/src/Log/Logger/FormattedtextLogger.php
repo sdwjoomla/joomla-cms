@@ -145,6 +145,20 @@ class FormattedtextLogger extends Logger
     }
 
     /**
+     * Prevent object injection attacks by suppressing unserialization of instance with deferred rows
+     *
+     * @since  __DEPLOY_VERSION__
+     *
+     * @throws \Exception
+     */
+    public function __wakeup()
+    {
+        if ($this->defer && !empty($this->deferredEntries)) {
+            throw new \RuntimeException('Can not unserialize in defer mode');
+        }
+    }
+
+    /**
      * Method to add an entry to the log.
      *
      * @param   LogEntry  $entry  The log entry object to add to the log.
