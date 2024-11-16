@@ -2357,6 +2357,11 @@ class JoomlaInstallerScript
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Resources/vendor/font-awesome/fonts/fontawesome-webfont.ttf',
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Resources/vendor/font-awesome/fonts/fontawesome-webfont.woff',
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Resources/vendor/font-awesome/fonts/fontawesome-webfont.woff2',
+            // From 5.2.1 to 5.3.0-alpha1
+            '/media/system/css/joomla-core-loader.css',
+            '/media/system/css/joomla-core-loader.min.css',
+            '/media/system/css/joomla-core-loader.min.css.gz',
+            '/media/system/scss/joomla-core-loader.scss',
         ];
 
         $folders = [
