@@ -108,11 +108,12 @@ class PreprocessRules implements RulesInterface
         }
 
         $dbquery = $this->getDatabase()->getQuery(true);
+        $id      = (int) $query[$key];
 
         $dbquery->select($dbquery->quoteName('alias'))
             ->from($this->table)
             ->where($dbquery->quoteName($this->key) . ' = :key')
-            ->bind(':key', $query[$key], ParameterType::INTEGER);
+            ->bind(':key', $id, ParameterType::INTEGER);
 
         // Do we have a parent key?
         if ($parent_key && $this->parent_key) {
