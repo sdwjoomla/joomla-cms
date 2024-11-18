@@ -3163,11 +3163,11 @@ class JoomlaInstallerScript
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.2.2
      *
      * @todo    6.0 Remove this method
      *
-     * @deprecated  __DEPLOY_VERSION__ will be removed in 6.0 without replacement
+     * @deprecated  5.2.2 will be removed in 6.0 without replacement
      */
     protected function fixFilesystemPermissions()
     {
