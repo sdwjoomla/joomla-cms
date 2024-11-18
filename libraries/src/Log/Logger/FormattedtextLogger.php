@@ -147,7 +147,7 @@ class FormattedtextLogger extends Logger
     /**
      * Prevent object injection attacks by suppressing unserialization of instance with deferred rows
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.2.2
      *
      * @throws \Exception
      */
