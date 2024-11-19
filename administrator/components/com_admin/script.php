@@ -3546,13 +3546,15 @@ class JoomlaInstallerScript
         }
 
         foreach ($folders as $folder) {
-            if (is_dir(JPATH_ROOT . $folder) && decoct(fileperms(JPATH_ROOT . $folder) & 0777) === '777') {
-                @chmod(JPATH_ROOT . $folder, 0755);
-            }
+            if (is_dir(JPATH_ROOT . $folder)) {
+                if (decoct(fileperms(JPATH_ROOT . $folder) & 0777) === '777') {
+                    @chmod(JPATH_ROOT . $folder, 0755);
+                }
 
-            foreach (Folder::files(JPATH_ROOT . $folder, '.', false, true) as $file) {
-                if (decoct(fileperms($file) & 0777) === '777') {
-                    @chmod($file, 0644);
+                foreach (Folder::files(JPATH_ROOT . $folder, '.', false, true) as $file) {
+                    if (decoct(fileperms($file) & 0777) === '777') {
+                        @chmod($file, 0644);
+                    }
                 }
             }
         }
