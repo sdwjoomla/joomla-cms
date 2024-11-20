@@ -89,7 +89,7 @@ class Form implements CurrentUserInterface
      * Array containing name => [value => value, attributes => []] for each field.
      *
      * @var    array
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     protected $controlFields = ['joomla.form.token' => []];
 
@@ -1888,7 +1888,7 @@ class Form implements CurrentUserInterface
      *
      * @return static
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public function addControlField(string $name, string $value = '', array $attributes = []): static
     {
@@ -1907,7 +1907,7 @@ class Form implements CurrentUserInterface
      *
      * @return static
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public function removeControlField(string $name): static
     {
@@ -1921,7 +1921,7 @@ class Form implements CurrentUserInterface
      *
      * @return array
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public function getControlFields(): array
     {
@@ -1933,7 +1933,7 @@ class Form implements CurrentUserInterface
      *
      * @return string
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public function renderControlFields(): string
     {
