@@ -193,7 +193,7 @@ class TaskTable extends Table implements CurrentUserInterface
      *
      * @since   __DEPLOY_VERSION__
      */
-    protected function _getAssetParentId(Table $table = null, $id = null): int
+    protected function _getAssetParentId(?Table $table = null, $id = null): int
     {
         $assetId = null;
         $asset   = new Asset($this->getDbo(), $this->getDispatcher());
