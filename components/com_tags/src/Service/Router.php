@@ -18,6 +18,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Menu\AbstractMenu;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -98,6 +99,31 @@ class Router extends RouterBase
      */
     public function preprocess($query)
     {
+        // Make sure the alias for the tags is correct
+        if (isset($query['id'])) {
+            if (!\is_array($query['id'])) {
+                $query['id'] = [$query['id']];
+            }
+
+            foreach ($query['id'] as &$item) {
+                if (!strpos($item, ':')) {
+                    $dbquery = $this->db->getQuery(true);
+                    $id      = (int) $item;
+
+                    $dbquery->select($dbquery->quoteName('alias'))
+                        ->from('#__tags')
+                        ->where($dbquery->quoteName('id') . ' = :key')
+                        ->bind(':key', $id, ParameterType::INTEGER);
+
+                    $obj = $this->db->setQuery($dbquery)->loadObject();
+
+                    if ($obj) {
+                        $item .= ':' . $obj->alias;
+                    }
+                }
+            }
+        }
+
         $active = $this->menu->getActive();
 
         /**
@@ -195,10 +221,6 @@ class Router extends RouterBase
             if ($menuItem->query['view'] == 'tags') {
                 if (isset($query['id'])) {
                     $ids = $query['id'];
-
-                    if (!\is_array($ids)) {
-                        $ids = [$ids];
-                    }
 
                     foreach ($ids as $id) {
                         $segments[] = $id;
