@@ -104,11 +104,6 @@ class ArticlesModel extends ListModel
 
         if (!$params->get('workflow_enabled')) {
             $form->removeField('stage', 'filter');
-        } else {
-            $ordering = $form->getField('fullordering', 'list');
-
-            $ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
-            $ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
         }
 
         return $form;
