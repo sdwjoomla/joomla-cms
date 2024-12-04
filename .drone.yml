@@ -474,7 +474,7 @@ steps:
       - git rev-parse origin/$MINORVERSION-dev > transfer/$MINORVERSION.txt
       - php build/build.php --remote=origin/$MINORVERSION-dev --exclude-gzip --exclude-bzip2
       - mv build/tmp/packages/* transfer/
-      - php build/build.php --remote=origin/$MINORVERSION-dev --exclude-zip --exclude-bzip2 --debug-build
+      - php build/build.php --remote=origin/$MINORVERSION-dev --include-zstd --exclude-gzip --exclude-zip --exclude-bzip2 --debug-build
       - mv build/tmp/packages/* transfer/
 
   - name: upload
@@ -522,6 +522,6 @@ trigger:
 
 ---
 kind: signature
-hmac: 62793a0d4a6d84bf968e0469bd34008ddd23093300c46c8e79e7078ed38c5056
+hmac: 0e2697e6e32254f3faf89e98b213a08ffa4ee64569897a8af4b9d66c816fd865
 
 ...
