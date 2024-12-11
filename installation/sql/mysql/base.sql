@@ -873,7 +873,7 @@ CREATE TABLE IF NOT EXISTS `#__updates` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__tuf_updates`
+-- Table structure for table `#__tuf_metadata`
 --
 
 CREATE TABLE IF NOT EXISTS `#__tuf_metadata` (
