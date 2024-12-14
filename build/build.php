@@ -272,7 +272,6 @@ if (!$debugBuild) {
     $composerOptions .= '--no-dev';
 }
 
-
 echo "Start build for remote $remote.\n";
 echo "Delete old release folder.\n";
 system('rm -rf ' . $tmp);
