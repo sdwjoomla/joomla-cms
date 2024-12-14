@@ -50,7 +50,7 @@
   },
   "require": {
     "php": "^8.1.0",
-    "joomla/application": "^3.0.2",
+    "joomla/application": "^3.0.3",
     "joomla/archive": "^3.0.2",
     "joomla/authentication": "^3.0.1",
     "joomla/console": "^3.0.1",
