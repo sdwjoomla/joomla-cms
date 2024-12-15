@@ -38,7 +38,7 @@ class MenuItem implements NodeInterface
     /**
      * The type of menu this item belongs to
      *
-     * @var    integer
+     * @var    string
      * @since  3.7.0
      */
     public $menutype;
