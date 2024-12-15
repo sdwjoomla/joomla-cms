@@ -28,7 +28,7 @@ use Joomla\Registry\Registry;
 /**
  * View class for a list of logs.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.3.0
  */
 class HtmlView extends BaseHtmlView
 {
@@ -36,7 +36,7 @@ class HtmlView extends BaseHtmlView
      * The search tools form
      *
      * @var    Form
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public $filterForm;
 
@@ -44,7 +44,7 @@ class HtmlView extends BaseHtmlView
      * The active search filters
      *
      * @var    array
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public $activeFilters = [];
 
@@ -52,7 +52,7 @@ class HtmlView extends BaseHtmlView
      * An array of items
      *
      * @var    array
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     protected $items = [];
 
@@ -60,7 +60,7 @@ class HtmlView extends BaseHtmlView
      * The pagination object
      *
      * @var    Pagination
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     protected $pagination;
 
@@ -68,7 +68,7 @@ class HtmlView extends BaseHtmlView
      * The model state
      *
      * @var    Registry
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     protected $state;
 
@@ -79,7 +79,7 @@ class HtmlView extends BaseHtmlView
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.3.0
      * @throws  \Exception
      */
     public function display($tpl = null): void
@@ -106,7 +106,7 @@ class HtmlView extends BaseHtmlView
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.3.0
      */
     protected function addToolbar(): void
     {

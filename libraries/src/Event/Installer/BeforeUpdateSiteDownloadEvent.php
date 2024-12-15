@@ -16,7 +16,7 @@ namespace Joomla\CMS\Event\Installer;
 /**
  * Class for update site events
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.3.0
  */
 class BeforeUpdateSiteDownloadEvent extends BeforePackageDownloadEvent
 {

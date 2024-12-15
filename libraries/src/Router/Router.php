@@ -86,7 +86,7 @@ class Router
      * flag can be set to true to mark the URL as erroneous.
      *
      * @var    bool
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     protected $tainted = false;
 
@@ -384,7 +384,7 @@ class Router
      * can later do additional processing, like redirecting to the right URL.
      * If the URL is demonstrably wrong, it should still throw a 404 exception.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public function setTainted()
     {
@@ -396,7 +396,7 @@ class Router
      *
      * @return  bool
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     public function isTainted()
     {

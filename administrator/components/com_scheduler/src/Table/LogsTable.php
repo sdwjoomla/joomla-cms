@@ -21,7 +21,7 @@ use Joomla\Event\DispatcherInterface;
 /**
  * Logs Table class.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.3.0
  */
 class LogsTable extends Table
 {
@@ -31,7 +31,7 @@ class LogsTable extends Table
      * @param   DatabaseDriver        $db          Database connector object
      * @param   ?DispatcherInterface  $dispatcher  Event dispatcher for this table
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.3.0
      */
     public function __construct(DatabaseDriver $db, ?DispatcherInterface $dispatcher = null)
     {
