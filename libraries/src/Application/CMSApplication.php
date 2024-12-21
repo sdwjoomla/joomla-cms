@@ -365,7 +365,7 @@ abstract class CMSApplication extends WebApplication implements ContainerAwareIn
      * @return  void
      *
      * @throws  \Exception
-     * @deprecated  __DEPLOY_VERSION__  will be removed in 7.0
+     * @deprecated  5.2.3  will be removed in 7.0
      *              Use $this->checkUserRequiresReset() instead.
      */
     protected function checkUserRequireReset($option, $view, $layout, $tasks)
