@@ -591,6 +591,7 @@ class TagsHelper extends CMSHelper
                 'MAX(' . $db->quoteName('c.core_publish_down') . ') AS ' . $db->quoteName('core_publish_down'),
                 'MAX(' . $db->quoteName('ct.type_title') . ') AS ' . $db->quoteName('content_type_title'),
                 'MAX(' . $db->quoteName('ct.router') . ') AS ' . $db->quoteName('router'),
+                'MAX(' . $db->quoteName('tc.title') . ') AS ' . $db->quoteName('core_category_title'),
                 'CASE WHEN ' . $db->quoteName('c.core_created_by_alias') . ' > ' . $db->quote(' ')
                 . ' THEN ' . $db->quoteName('c.core_created_by_alias') . ' ELSE ' . $db->quoteName('ua.name') . ' END AS ' . $db->quoteName('author'),
                 $db->quoteName('ua.email', 'author_email'),
