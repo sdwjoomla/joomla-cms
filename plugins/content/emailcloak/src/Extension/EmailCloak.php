@@ -11,6 +11,7 @@
 namespace Joomla\Plugin\Content\EmailCloak\Extension;
 
 use Joomla\CMS\Event\Content\ContentPrepareEvent;
+use Joomla\CMS\Event\Finder\ResultEvent;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Event\SubscriberInterface;
@@ -36,7 +37,33 @@ final class EmailCloak extends CMSPlugin implements SubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return ['onContentPrepare' => 'onContentPrepare'];
+        return [
+            'onContentPrepare' => 'onContentPrepare',
+            'onFinderResult'   => 'onFinderResult',
+        ];
+    }
+
+    /**
+     * Plugin that cloaks all emails in com_finder from spambots via Javascript.
+     *
+     * @param   ResultEvent  $event  Event instance
+     *
+     * @return  void
+     */
+    public function onFinderResult(ResultEvent $event)
+    {
+        $item = $event->getItem();
+
+        // If the item does not have a text property there is nothing to do
+        if (!isset($item->description)) {
+            return;
+        }
+
+        $text = $this->cloak($item->description);
+
+        if ($text) {
+            $item->description = $text;
+        }
     }
 
     /**
