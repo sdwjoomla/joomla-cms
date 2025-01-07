@@ -12,11 +12,11 @@ namespace Joomla\Plugin\System\TaskNotification\Extension;
 
 use Joomla\CMS\Event\Model;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Mail\MailTemplate;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\User\UserFactoryAwareTrait;
+use Joomla\Component\Scheduler\Administrator\Helper\SchedulerHelper;
 use Joomla\Component\Scheduler\Administrator\Task\Status;
 use Joomla\Component\Scheduler\Administrator\Task\Task;
 use Joomla\Database\DatabaseAwareTrait;
@@ -125,13 +125,8 @@ final class TaskNotification extends CMSPlugin implements SubscriberInterface
     {
         /** @var Task $task */
         $task = $event->getArgument('subject');
-
-        // @todo safety checks, multiple files [?]
-        $outFile = $event->getArgument('subject')->snapshot['output_file'] ?? '';
-        $data    = $this->getDataFromTask($event->getArgument('subject'));
-        $model   = $this->getApplication()->bootComponent('com_scheduler')
-            ->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
-        $model->logTask($data);
+        $data = $this->getDataFromTask($event->getArgument('subject'));
+        $this->saveLog($data);
 
         if (!(int) $task->get('params.notifications.failure_mail', 1)) {
             return;
@@ -140,6 +135,8 @@ final class TaskNotification extends CMSPlugin implements SubscriberInterface
         // Load translations
         $this->loadLanguage();
 
+        // @todo safety checks, multiple files [?]
+        $outFile = $event->getArgument('subject')->snapshot['output_file'] ?? '';
         $this->sendMail('plg_system_tasknotification.failure_mail', $data, $outFile);
     }
 
@@ -185,13 +182,8 @@ final class TaskNotification extends CMSPlugin implements SubscriberInterface
     {
         /** @var Task $task */
         $task = $event->getArgument('subject');
-
-        // @todo safety checks, multiple files [?]
-        $outFile = $event->getArgument('subject')->snapshot['output_file'] ?? '';
-        $data    = $this->getDataFromTask($event->getArgument('subject'));
-        $model   = $this->getApplication()->bootComponent('com_scheduler')
-            ->getMVCFactory()->createModel('Logs', 'Administrator', ['ignore_request' => true]);
-        $model->logTask($data);
+        $data = $this->getDataFromTask($event->getArgument('subject'));
+        $this->saveLog($data);
 
         if (!(int) $task->get('params.notifications.success_mail', 0)) {
             return;
@@ -199,6 +191,9 @@ final class TaskNotification extends CMSPlugin implements SubscriberInterface
 
         // Load translations
         $this->loadLanguage();
+
+        // @todo safety checks, multiple files [?]
+        $outFile = $event->getArgument('subject')->snapshot['output_file'] ?? '';
         $this->sendMail('plg_system_tasknotification.success_mail', $data, $outFile);
     }
 
@@ -214,10 +209,7 @@ final class TaskNotification extends CMSPlugin implements SubscriberInterface
      */
     public function notifyWillResume(Event $event): void
     {
-        $data  = $this->getDataFromTask($event->getArgument('subject'));
-        $model = $this->getApplication()->bootComponent('com_scheduler')
-            ->getMVCFactory()->createModel('Logs', 'Administrator', ['ignore_request' => true]);
-        $model->logTask($data);
+        $this->saveLog($this->getDataFromTask($event->getArgument('subject')));
     }
 
     /**
@@ -340,5 +332,33 @@ final class TaskNotification extends CMSPlugin implements SubscriberInterface
         if (!$mailSent) {
             Log::add($this->getApplication()->getLanguage()->_('PLG_SYSTEM_TASK_NOTIFICATION_NO_MAIL_SENT'), Log::WARNING);
         }
+    }
+
+    /**
+     * @param   array  $data  The form data
+     *
+     * @return  void
+     *
+     * @since  __DEPLOY_VERSION__
+     * @throws \Exception
+     */
+    private function saveLog(array $data): void
+    {
+        $model         = $this->getApplication()->bootComponent('com_scheduler')->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
+        $taskInfo      = $model->getItem($data['TASK_ID']);
+
+        $obj           = new \stdClass();
+        $obj->tasktype = SchedulerHelper::getTaskOptions()->findOption($taskInfo->type)->title ?? '';
+        $obj->taskname = $data['TASK_TITLE'];
+        $obj->duration = $data['TASK_DURATION'] ?? 0;
+        $obj->jobid    = $data['TASK_ID'];
+        $obj->exitcode = $data['EXIT_CODE'];
+        $obj->taskid   = $data['TASK_TIMES'];
+        $obj->lastdate = Factory::getDate()->toSql();
+        $obj->nextdate = $taskInfo->next_execution;
+
+        $model = $this->getApplication()->bootComponent('com_scheduler')
+            ->getMVCFactory()->createModel('Log', 'Administrator', ['ignore_request' => true]);
+        $model->save((array)$obj);
     }
 }

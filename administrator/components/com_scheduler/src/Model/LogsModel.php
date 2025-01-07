@@ -15,7 +15,6 @@ namespace Joomla\Component\Scheduler\Administrator\Model;
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Component\Scheduler\Administrator\Helper\SchedulerHelper;
@@ -184,92 +183,5 @@ class LogsModel extends ListModel
         $query->order($db->escape($this->getState('list.ordering', 'a.lastdate')) . ' ' . $db->escape($this->getState('list.direction', 'DESC')));
 
         return $query;
-    }
-
-    /**
-     * Delete rows.
-     *
-     * @param   array    $pks    The ids of the items to delete.
-     *
-     * @return  boolean  Returns true on success, false on failure.
-     */
-    public function delete($pks)
-    {
-        if ($this->canDelete($pks)) {
-            // Delete logs from list
-            $db    = $this->getDatabase();
-            $query = $db->getQuery(true)
-                ->delete($db->quoteName('#__scheduler_logs'))
-                ->whereIn($db->quoteName('id'), $pks);
-
-            $db->setQuery($query);
-            $this->setError((string) $query);
-
-            try {
-                $db->execute();
-            } catch (\RuntimeException $e) {
-                $this->setError($e->getMessage());
-
-                return false;
-            }
-        } else {
-            Factory::getApplication()->enqueueMessage(Text::_('JERROR_CORE_DELETE_NOT_PERMITTED'), 'error');
-        }
-
-        return true;
-    }
-
-    /**
-     * Determine whether a record may be deleted taking into consideration
-     * the user's permissions over the record.
-     *
-     * @param   object  $record  The database row/record in question
-     *
-     * @return  boolean  True if the record may be deleted
-     *
-     * @since  5.3.0
-     * @throws \Exception
-     */
-    protected function canDelete($record): bool
-    {
-        // Record doesn't exist, can't delete
-        if (empty($record)) {
-            return false;
-        }
-
-        return Factory::getApplication()->getIdentity()->authorise('core.delete', 'com_scheduler');
-    }
-
-    /**
-     * @param   array   $data        The task execution data.
-     *
-     * @return void
-     *
-     * @since 5.3.0
-     * @throws Exception
-     */
-    public function logTask(array $data): void
-    {
-        $model         = Factory::getApplication()->bootComponent('com_scheduler')
-            ->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
-        $taskInfo      = $model->getItem($data['TASK_ID']);
-        $taskOptions   = SchedulerHelper::getTaskOptions();
-        $safeTypeTitle = $taskOptions->findOption($taskInfo->type)->title ?? '';
-        $duration      = ($data['TASK_DURATION'] ?? 0);
-        $created       = Factory::getDate()->toSql();
-
-        /** @var \Joomla\Component\Schduler\Administrator\Table\LogsTable $table */
-        $logsTable           = $this->getTable();
-        $logsTable->tasktype = $safeTypeTitle;
-        $logsTable->taskname = $data['TASK_TITLE'];
-        $logsTable->duration = $duration;
-        $logsTable->jobid    = $data['TASK_ID'];
-        $logsTable->exitcode = $data['EXIT_CODE'];
-        $logsTable->taskid   = $data['TASK_TIMES'];
-        $logsTable->lastdate = $created;
-        $logsTable->nextdate = $taskInfo->next_execution;
-
-        // Log the execution of the task.
-        $logsTable->store();
     }
 }

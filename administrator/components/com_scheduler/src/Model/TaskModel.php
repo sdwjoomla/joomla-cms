@@ -254,7 +254,7 @@ class TaskModel extends AdminModel
      * @since  4.1.0
      * @throws \Exception
      */
-    public function getTable($name = 'Task', $prefix = 'Table', $options = []): Table
+    public function getTable($name = 'Task', $prefix = 'Administrator', $options = []): Table
     {
         return parent::getTable($name, $prefix, $options);
     }
