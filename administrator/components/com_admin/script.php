@@ -2362,6 +2362,12 @@ class JoomlaInstallerScript
             '/media/system/css/joomla-core-loader.min.css',
             '/media/system/css/joomla-core-loader.min.css.gz',
             '/media/system/scss/joomla-core-loader.scss',
+            // From 5.3.0-alpha2 to 5.3.0-alpha3
+            '/administrator/components/com_scheduler/src/Table/LogsTable.php',
+            '/media/system/css/system-site-offline_rtl.css',
+            '/media/system/css/system-site-offline_rtl.min.css',
+            '/media/system/css/system-site-offline_rtl.min.css.gz',
+            '/media/system/scss/system-site-offline_rtl.scss',
         ];
 
         $folders = [
