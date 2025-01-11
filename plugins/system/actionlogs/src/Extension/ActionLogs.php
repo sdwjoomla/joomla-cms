@@ -342,7 +342,7 @@ final class ActionLogs extends CMSPlugin
      *
      * @return  string  The rendered value.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.3.0
      */
     public static function renderActionlogsExcludeSelf($value)
     {
