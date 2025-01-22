@@ -106,7 +106,7 @@ final class EmailCloak extends CMSPlugin implements SubscriberInterface
      */
     private function getPattern($link, $text)
     {
-        $pattern = '~(?:<a ([^>]*)href\s*=\s*"mailto:' . $link . '"([^>]*))>' . $text . '</a>~i';
+        $pattern = '~(?:<a ([^>]*)href\s*=\s*"mailto:' . $link . '"([^>]*))>' . $text . '</a>~iu';
 
         return $pattern;
     }
@@ -137,7 +137,7 @@ final class EmailCloak extends CMSPlugin implements SubscriberInterface
         $mode = $mode === 1;
 
         // Example: any@example.org
-        $searchEmail = '([\w\.\'\-\+]+\@(?:[a-z0-9\.\-]+\.)+(?:[a-zA-Z0-9\-]{2,24}))';
+        $searchEmail = "([\p{L}\p{N}\.\'\-\+]+\@(?:[\.\-\p{L}\p{N}]+\.)+(?:[\-\p{L}\p{N}]{2,24}))";
 
         // Example: any@example.org?subject=anyText
         $searchEmailLink = $searchEmail . '([?&][\x20-\x7f][^"<>]+)';
@@ -475,7 +475,7 @@ final class EmailCloak extends CMSPlugin implements SubscriberInterface
          * <img src="..." title="email@example.org"> or <input type="text" placeholder="email@example.org">
          * The '<[^<]*>(*SKIP)(*F)|' trick is used to exclude this kind of occurrences
          */
-        $pattern = '~<[^<]*(?<!\/)>(*SKIP)(*F)|<[^>]+?(\w*=\"' . $searchEmail . '\")[^>]*\/>~i';
+        $pattern = '~<[^<]*(?<!\/)>(*SKIP)(*F)|<[^>]+?(\w*=\"' . $searchEmail . '\")[^>]*\/>~iu';
 
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail        = $regs[0][0];
@@ -489,7 +489,7 @@ final class EmailCloak extends CMSPlugin implements SubscriberInterface
          * Search for plain text email addresses, such as email@example.org but within HTML attributes:
          * <a title="email@example.org" href="#">email</a> or <li title="email@example.org">email</li>
          */
-        $pattern = '(<[^>]+?(\w*=\"' . $searchEmail . '")[^>]*>[^<]+<[^<]+>)';
+        $pattern = '~(<[^>]+?(\w*=\"' . $searchEmail . '")[^>]*>[^<]+<[^<]+>)~iu';
 
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail        = $regs[0][0];
@@ -506,7 +506,7 @@ final class EmailCloak extends CMSPlugin implements SubscriberInterface
         * The '<[^<]*(?<!\/(?:src))>(*SKIP)(*F)|' exclude image files with @ in filename
         */
 
-        $pattern = '~<[^<]*(?<!\/(?:src))>(*SKIP)(*F)|' . $searchEmail . '~i';
+        $pattern = '~<[^<]*(?<!\/(?:src))>(*SKIP)(*F)|' . $searchEmail . '~iu';
 
         while (preg_match($pattern, $text, $regs, PREG_OFFSET_CAPTURE)) {
             $mail        = $regs[1][0];
