@@ -56,7 +56,7 @@ final class ConfirmConsent extends CMSPlugin implements SubscriberInterface
      *
      * @param   PrepareFormEvent $event  The event instance.
      *
-     * @return  boolean
+     * @return  void
      *
      * @since   3.9.0
      */
@@ -65,7 +65,7 @@ final class ConfirmConsent extends CMSPlugin implements SubscriberInterface
         $form = $event->getForm();
 
         if ($this->getApplication()->isClient('administrator') || !\in_array($form->getName(), $this->supportedContext)) {
-            return true;
+            return;
         }
 
         $this->loadLanguage();
@@ -95,7 +95,5 @@ final class ConfirmConsent extends CMSPlugin implements SubscriberInterface
 					</field>
 				</fieldset>
 			</form>');
-
-        return true;
     }
 }
