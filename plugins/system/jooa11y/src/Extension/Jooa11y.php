@@ -181,32 +181,33 @@ final class Jooa11y extends CMSPlugin implements SubscriberInterface
 
         // Get plugin options from xml
         $getOptions = [
-            'checkRoot'           => $this->params->get('checkRoot', 'main'),
-            'readabilityRoot'     => $this->params->get('readabilityRoot', 'main'),
-            'containerIgnore'     => $this->params->get('containerIgnore'),
-            'contrastPlugin'      => $this->params->get('contrastPlugin', 1),
-            'formLabelsPlugin'    => $this->params->get('formLabelsPlugin', 1),
-            'linksAdvancedPlugin' => $this->params->get('linksAdvancedPlugin', 1),
-            'colourFilterPlugin'  => $this->params->get('colourFilterPlugin', 1),
-            'checkAllHideToggles' => $this->params->get('additionalChecks', 0),
-            'shadowComponents'    => $this->params->get('shadowComponents'),
+            'checkRoot'       => $this->params->get('checkRoot', 'main'),
+            'readabilityRoot' => $this->params->get('readabilityRoot', 'main'),
+            'containerIgnore' => $this->params->get('containerIgnore'),
         ];
         $getExtraProps = $this->params->get('extraProps', []);
+        $getChecks     = $this->params->get('checks', []);
 
-
-        // Process extra props
-        $extraProps = [];
-        foreach ($getExtraProps as $prop) {
-            $decodedValue = json_decode($prop->value);
-            if (is_numeric($decodedValue) || \is_bool($decodedValue)) {
-                $extraProps[$prop->key] = $decodedValue;
-            } else {
-                $extraProps[$prop->key] = "{$prop->value}";
+        // Process Sa11y's props
+        function processProps($props)
+        {
+            $result = [];
+            foreach ($props as $prop) {
+                $decodedValue = json_decode($prop->value);
+                if (is_numeric($decodedValue) || \is_bool($decodedValue)) {
+                    $result[$prop->key] = $decodedValue;
+                } else {
+                    $result[$prop->key] = "{$prop->value}";
+                }
             }
+            return $result;
         }
+        $extraProps = processProps($getExtraProps);
+        $checks     = processProps($getChecks);
+        $allChecks  = ['checks' => $checks];
 
         // Merge all options together and add to page
-        $allOptions = array_merge($getOptions, $extraProps);
+        $allOptions = array_merge($getOptions, $extraProps, $allChecks);
         $document->addScriptOptions('jooa11yOptions', $allOptions);
 
         /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa*/
